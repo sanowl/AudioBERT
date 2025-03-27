@@ -3,7 +3,6 @@ import sys
 import argparse
 import logging
 import yaml
-import random
 import numpy as np
 import pandas as pd
 import librosa
@@ -33,13 +32,14 @@ import nltk
 from nltk.corpus import wordnet
 from typing import List, Dict, Any
 import warnings
+import secrets
 
 # Ignore warnings for cleaner output
 warnings.filterwarnings('ignore')
 
 # Set random seeds for reproducibility
 SEED = 42
-random.seed(SEED)
+secrets.SystemRandom().seed(SEED)
 np.random.seed(SEED)
 torch.manual_seed(SEED)
 if torch.cuda.is_available():
@@ -145,7 +145,7 @@ def generate_animal_sound_prompts(df):
         description = row['text']
         onomatopoeia = extract_onomatopoeic_words(description)
         if onomatopoeia:
-            sound = random.choice(onomatopoeia)
+            sound = secrets.choice(onomatopoeia)
             prompt = f"'{sound}' is the sound a [MASK] makes."
             labels.append(row['category'])
             prompts.append(prompt)
